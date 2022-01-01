@@ -1,0 +1,16 @@
+body {
+    min-height: 100vh;
+}
+
+#my-video {
+    position: absolute;
+    max-width: 20%;
+    max-height: 20%;
+}
+
+#other-video {
+    position: absolute;
+    top: 50vh;
+    max-width: 20%;
+    max-height: 20%;
+}

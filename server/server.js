@@ -5,7 +5,8 @@ var http = require('http')
 var fs = require( 'fs' );
 var io = require('socket.io')(3000, {
     cors: {
-        origin: ['http://localhost:8080'],
+        origin: '*',
+        methods: ['GET', 'POST']
     },
 });
 
@@ -42,6 +43,12 @@ io.on('connection', socket => {
     socket.on('send-stop', () => {
         console.log(`User ${socket.id} not searching anymore`)
         searchingUsers.splice(userFinder(searchingUsers, socket.id), 1)
+
+        if(thisUser.connectedTo != null){
+            users[userFinder(users, thisUser.connectedTo)].connectedTo = null
+        }
+        thisUser.connectedTo = null
+
         io.to(socket.id).emit('receive-stop')
     })
 
@@ -57,8 +64,9 @@ io.on('connection', socket => {
         if(searchingUsers[userFinder(searchingUsers, socket.id)] != undefined){
             searchingUsers.splice(userFinder(searchingUsers, socket.id), 1);
         }
-
-
+        // if(thisUser.connectedTo != null){
+        //     users[userFinder(users, thisUser.connectedTo)].connectedTo = null
+        // }
         console.log(users)
     })
 })

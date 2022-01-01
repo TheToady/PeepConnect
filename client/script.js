@@ -5,17 +5,15 @@ const searchButton = document.getElementById('search-button')
 const stopButton = document.getElementById('stop-button')
 const testText = document.getElementById('test-text')
 const testButton = document.getElementById('test-button')
-const myVideo = document.getElementById('my-video')
-const otherVideo = document.getElementById('other-video')
+// const myVideo = document.getElementById('my-video')
+// const otherVideo = document.getElementById('other-video')
 
 const socket = io('http://localhost:3000')
 
-//Video Chat
-let localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-let remoteStream = new MediaStream();
-
 //vars
 var matchedUser = null;
+var localstream = new MediaStream();
+var remoteStream = new MediaStream();
 
 //setting up
 searchButton.style.visibility = 'visible'
@@ -49,6 +47,7 @@ socket.on('receive-stop', () => {
     displayMessage('Stopped')
     searchButton.style.visibility = 'visible'
     stopButton.style.visibility = 'hidden'
+
 })
 
 socket.on('receive-matched', (_matchedUser) => {
@@ -56,7 +55,7 @@ socket.on('receive-matched', (_matchedUser) => {
     displayMessage(`Matched with ${_matchedUser}`)
     matchedUser = _matchedUser
 
-    
+    StartCall()
 })
 
 //Buttons
@@ -81,8 +80,29 @@ stopButton.addEventListener('click', e => {
 
     socket.emit('send-stop')
 })
-//functions
 
+//functionsFailed to set the 'srcObject' property on 'HTMLMediaElement': Failed to convert value to 'MediaStream'
 function displayMessage(message) {
     testText.textContent = message
+}
+
+function StartCall() {
+    
+
+    console.log('call started')
+    localstream = navigator.mediaDevices.getUserMedia({
+        video: {
+            frameRate: 24,
+            width: {
+                min: 400, ideal: 720, max: 1280
+            },
+            aspectRatio: 1.33333
+        }, 
+        audio: true 
+    }, (error) => {
+        console.log(error)
+    })
+
+    const video = document.createElement('video') 
+    video = localstream;
 }
