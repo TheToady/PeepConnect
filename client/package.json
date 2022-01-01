@@ -8,10 +8,10 @@
   "name": "client",
   "version": "1.0.0",
   "main": "script.js",
-  "dependencies": {
-    
-  },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "socket.io-client": "^4.4.0"
+  }
 }
